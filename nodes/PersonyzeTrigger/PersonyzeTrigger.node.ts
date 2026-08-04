@@ -41,13 +41,18 @@ export class PersonyzeTrigger implements INodeType {
 				typeOptions: { minValue: 1 },
 				default: 50,
 				description: 'Max number of results to return',
+				hint: 'Personyze serves an incremental read 50 rows at a time, so a higher value has no effect.',
 			},
 		],
 	};
 
 	async poll(this: IPollFunctions): Promise<INodeExecutionData[][] | null> {
 		const staticData = this.getWorkflowStaticData('node');
-		const limit = this.getNodeParameter('limit', 100) as number;
+		// A `where` range condition makes the query "slow" to the API, which then
+		// refuses to read past 50 rows however it is ordered -- so the poll asks
+		// for at most 50 even when the user sets a higher limit. Anything above
+		// that came back as a bare 400 and the trigger simply stopped firing.
+		const limit = Math.min(this.getNodeParameter('limit', 50) as number, 50);
 		const now = Math.floor(Date.now() / 1000);
 		const since = staticData.lastTimeChecked as number | undefined;
 		const manual = this.getMode() === 'manual';

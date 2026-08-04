@@ -97,7 +97,10 @@ export class Personyze implements INodeType {
 						value: 'upsert',
 						action: 'Create or update a visitor',
 						description: 'Create a new record, or update the current one if it already exists (upsert)',
-						routing: { request: { method: 'POST', url: '/users' } },
+						routing: {
+							request: { method: 'POST', url: '/users' },
+							output: { postReceive: [{ type: 'setKeyValue', properties: { user_id: '={{ $response.body }}' } }] },
+						},
 					},
 					{
 						name: 'Delete',
@@ -109,6 +112,7 @@ export class Personyze implements INodeType {
 								method: 'DELETE',
 								url: `=/users/where/{{ $parameter["keyType"] }}={{ ${ENCODE}($parameter["keyValue"]) }}`,
 							},
+							output: { postReceive: [{ type: 'setKeyValue', properties: { rows_affected: '={{ $response.body }}' } }] },
 						},
 					},
 					{
@@ -130,6 +134,7 @@ export class Personyze implements INodeType {
 								method: 'PUT',
 								url: `=/users/where/{{ $parameter["keyType"] }}={{ ${ENCODE}($parameter["keyValue"]) }}`,
 							},
+							output: { postReceive: [{ type: 'setKeyValue', properties: { rows_affected: '={{ $response.body }}' } }] },
 						},
 					},
 				],
@@ -266,7 +271,10 @@ export class Personyze implements INodeType {
 						value: 'addVisitor',
 						action: 'Add a visitor to an audience',
 						description: 'Add an existing visitor to one of your audiences',
-						routing: { request: { method: 'POST', url: '/user_list_users' } },
+						routing: {
+							request: { method: 'POST', url: '/user_list_users' },
+							output: { postReceive: [{ type: 'setKeyValue', properties: { id: '={{ $response.body }}' } }] },
+						},
 					},
 					{
 						name: 'Get Many',

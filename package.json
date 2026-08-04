@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-personyze",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "n8n node for Personyze: create and update visitors, manage audiences, read tracked events, and trigger on profile changes.",
   "keywords": [
     "n8n-community-node-package",
