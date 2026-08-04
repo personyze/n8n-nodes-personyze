@@ -1,0 +1,21 @@
+{
+  "node": "n8n-nodes-personyze",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": [
+    "Marketing",
+    "Sales"
+  ],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://personyze.com/wiki/rest:api-key"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://personyze.com/wiki/rest:start"
+      }
+    ]
+  }
+}
