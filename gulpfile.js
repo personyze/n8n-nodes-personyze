@@ -6,7 +6,9 @@ const { task, src, dest } = require('gulp');
 task('build:icons', copyIcons);
 
 function copyIcons() {
-	const nodeSource = path.resolve('nodes', '**', '*.{png,svg}');
-	const nodeDestination = path.resolve('dist', 'nodes');
-	return src(nodeSource).pipe(dest(nodeDestination));
+	// Credentials carry an icon of their own now -- the community-node scanner
+	// requires one -- so both trees have to be walked.
+	return src([path.resolve('nodes', '**', '*.{png,svg}'), path.resolve('credentials', '**', '*.{png,svg}')],
+	           { base: '.' })
+		.pipe(dest(path.resolve('dist')));
 }

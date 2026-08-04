@@ -10,6 +10,8 @@ export class PersonyzeApi implements ICredentialType {
 
 	displayName = 'Personyze API';
 
+	icon = { light: 'file:personyze.svg', dark: 'file:personyze.dark.svg' } as const;
+
 	documentationUrl = 'https://personyze.com/wiki/rest:api-key';
 
 	properties: INodeProperties[] = [

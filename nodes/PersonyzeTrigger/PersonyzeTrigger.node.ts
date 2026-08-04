@@ -5,6 +5,7 @@ import type {
 	INodeTypeDescription,
 	IPollFunctions,
 } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 
 const BASE_URL = 'https://app.personyze.com/rest';
 
@@ -21,15 +22,16 @@ export class PersonyzeTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Personyze Trigger',
 		name: 'personyzeTrigger',
-		icon: 'file:personyze.svg',
+		icon: { light: 'file:personyze.svg', dark: 'file:personyze.dark.svg' },
 		group: ['trigger'],
 		version: 1,
 		description: 'Starts the workflow when a Personyze visitor profile is created or changed',
 		subtitle: '={{ "Visitor changed" }}',
 		defaults: { name: 'Personyze Trigger' },
 		polling: true,
+		usableAsTool: true,
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'personyzeApi', required: true }],
 		properties: [
 			{

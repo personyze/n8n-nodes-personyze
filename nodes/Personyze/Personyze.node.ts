@@ -4,6 +4,7 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 
 /**
  * Personyze puts `where`, `order_by` and `limit` in the URL PATH, not the query
@@ -52,15 +53,15 @@ export class Personyze implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Personyze',
 		name: 'personyze',
-		icon: 'file:personyze.svg',
+		icon: { light: 'file:personyze.svg', dark: 'file:personyze.dark.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description: 'Create and update visitors, manage audiences and read events in Personyze',
 		defaults: { name: 'Personyze' },
 		usableAsTool: true,
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'personyzeApi', required: true }],
 		requestDefaults: {
 			baseURL: 'https://app.personyze.com/rest',

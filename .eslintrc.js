@@ -31,6 +31,13 @@ module.exports = {
 			parserOptions: { project: ['./tsconfig.json'] },
 			plugins: ['eslint-plugin-n8n-nodes-base'],
 			extends: ['plugin:n8n-nodes-base/nodes'],
+			// These two rewrite NodeConnectionTypes.Main to the string 'main',
+			// which @n8n/community-nodes -- the linter verification runs -- fails
+			// on. Running `lintfix` with them enabled silently breaks the package.
+			rules: {
+				'n8n-nodes-base/node-class-description-inputs-wrong-regular-node': 'off',
+				'n8n-nodes-base/node-class-description-outputs-wrong': 'off',
+			},
 		},
 	],
 };
