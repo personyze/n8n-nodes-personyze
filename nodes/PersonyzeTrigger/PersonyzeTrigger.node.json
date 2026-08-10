@@ -1,9 +1,9 @@
 {
-  "node": "n8n-nodes-personyze",
+  "node": "n8n-nodes-personyze.personyzeTrigger",
   "nodeVersion": "1.0",
   "codexVersion": "1.0",
   "categories": [
-    "Marketing",
+    "Marketing & Content",
     "Sales"
   ],
   "resources": {

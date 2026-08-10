@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-personyze",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "n8n node for Personyze: create and update visitors, manage audiences, read tracked events, and trigger on profile changes.",
   "keywords": [
     "n8n-community-node-package",
@@ -24,7 +24,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "npx rimraf dist && tsc && gulp build:icons",
+    "build": "npx rimraf dist && tsc && gulp build:assets",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
