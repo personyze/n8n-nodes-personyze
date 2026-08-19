@@ -29,7 +29,11 @@ export class PersonyzeTrigger implements INodeType {
 		subtitle: '={{ "Visitor changed" }}',
 		defaults: { name: 'Personyze Trigger' },
 		polling: true,
-		usableAsTool: true,
+		// No `usableAsTool` here, deliberately. An AI agent invokes a tool and waits for an
+		// answer; a trigger has no input and produces items when it polls, so there is
+		// nothing for an agent to call. Declaring it only puts an uncallable entry in the
+		// tool picker — which is what the community-node review rejected 0.2.0 for. The
+		// action node next door keeps its own, and should.
 		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'personyzeApi', required: true }],

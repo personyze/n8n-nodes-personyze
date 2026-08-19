@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-personyze",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "n8n node for Personyze: create and update visitors, manage audiences and the product catalog, record product interactions, and trigger on profile changes.",
   "keywords": [
     "n8n-community-node-package",
