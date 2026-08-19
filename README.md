@@ -6,7 +6,7 @@ workflow when a profile changes.
 
 Two nodes and one credential, over the existing REST API — no backend work.
 
-- **Personyze** — declarative node. Resources: Visitor, Audience, Event.
+- **Personyze** — declarative node. Resources: Visitor, Audience, Product, Interaction, Event.
 - **Personyze Trigger** — polling trigger on profile changes.
 - **Personyze API** — HTTP Basic, user name `api`, password an API key.
 
@@ -19,7 +19,11 @@ Two nodes and one credential, over the existing REST API — no backend work.
 | Visitor | Update | `PUT /users/where/…` |
 | Visitor | Delete | `DELETE /users/where/…` |
 | Audience | Get Many | `GET /user_lists` |
+| Audience | Create | `POST /user_lists` |
 | Audience | Add Visitor | `POST /user_list_users` |
+| Product | Create or Update | `POST /products` |
+| Product | Delete | `DELETE /products/where/…` |
+| Interaction | Record | `POST /do` |
 | Event | Get Many | `GET /events/where/…` |
 
 ## Credentials
@@ -99,13 +103,32 @@ Against n8n's
 - [ ] **Published from the GitHub action**, with provenance
 - [ ] `@n8n/scan-community-package` run against the published package
 
-## Three decisions worth knowing about
+## Decisions worth knowing about
 
-**Only Email and Visitor ID are lookup keys.** Internal ID is stored on the
-profile and returned by a read, but nothing can be found by it — verified
-against a live account: a search matches nothing, and a second write carrying
-the same one creates a duplicate rather than merging. It stays available as a
-field to write; it is not offered as a key anywhere.
+**Which lookup keys work depends on the endpoint, and the difference is not
+obvious.** On the visitor object, only Email and Visitor ID resolve: Internal ID
+is stored and returned, but a search on it matches nothing and a second write
+carrying the same one duplicates rather than merges. So it is a field to write,
+never a key to sync on.
+
+But `Add Visitor to Audience` is a different endpoint with a different
+resolver, and there CRM ID does work. This was previously assumed broken here
+and left out. Re-tested against a live account: two profiles were written, one
+carrying `internal_text_id` and one carrying `internal_id`, and both were found
+and added by CRM ID — confirmed by reading the membership rows back, because
+that endpoint answers every call with a meaningless `lastInsertId` and cannot be
+trusted to report its own success.
+
+**Audience names are not unique.** Posting the same name twice returns two
+different ids. `Audience → Create` therefore duplicates if a workflow runs it
+every time; look the audience up with `Get Many` first, and create only on a
+miss.
+
+**Product IDs, by contrast, are unique** — `internal_id` carries a UNIQUE index
+and the endpoint inserts in patch mode. So `Create or Update` genuinely updates
+in place, and fields left empty keep their stored values rather than blanking
+them. That is what makes a partial sync safe: a workflow that only knows price
+and stock can run against products described elsewhere.
 
 **There is no "Return All".** The API refuses any read whose `offset + limit`
 passes 1000 rows. A `returnAll` toggle would be a promise the API cannot keep,
